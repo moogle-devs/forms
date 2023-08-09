@@ -7,6 +7,7 @@
   <title>Moogle Forms</title>
   <link href="/static/style.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="icon" href="https://ssl.gstatic.com/docs/spreadsheets/forms/favicon_qp2.png" />
 </head>
 <body>
   <section id="top">
@@ -16,7 +17,14 @@
   </section>
   <div id="content"></div>
   <section id="add">
-    <button class="material-symbols-outlined" onclick="addQuestion();">add</button>
+    <select id="q-dropdown">
+      <option value="MultipleChoiceQuestion">Multiple-choice</option>
+      <option value="ShortAnswerQuestion">Short answer</option>
+      <option value="ParagraphQuestion">Paragraph answer</option>
+      <option value="Text">Title & description</option>
+      <option value="Image">Image</option>
+    </select>
+    <button class="material-symbols-outlined" onclick="addContent();">add</button>
   </section>
   <script src="/static/form.js"></script>
 </body>
