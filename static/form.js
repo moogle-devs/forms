@@ -1,11 +1,21 @@
 const $ = (q) => document.querySelector(q);
 let formIndex = 0;
 
-class Question {
+class FormContent {
   constructor() {
+    // empty
+  }
+}
+
+class Question extends FormContent {
+  constructor() {
+    super();
     this.question = "Question";
     this.required = false;
     this.init();
+  }
+  init() {
+    // empty
   }
   editQuestion(question) {
     this.question = question;
@@ -58,6 +68,55 @@ class MultipleChoiceQuestion extends Question {
   }
 }
 
+class ShortAnswerQuestion extends Question {
+  toHTML(id) {
+    return `
+      <section class="ShortAnswerQuestion" id="ShortAnswerQuestion-${id}">
+        <h2 contenteditable class="q-heading" id="saq-heading-${id}">${this.question}</h2>
+        <input disabled placeholder="Short answer text" />
+      </section>
+    `;
+  }
+}
+
+class ParagraphQuestion extends ShortAnswerQuestion {
+  toHTML(id) {
+    return `
+      <section class="ParagraphQuestion" id="ParagraphQuestion-${id}">
+        <h2 contenteditable class="q-heading" id="pgq-heading-${id}">${this.question}</h2>
+        <input disabled placeholder="Long answer text" />
+      </section>
+    `;
+  }
+}
+
+class Image extends FormContent {
+  constructor() {
+    super();
+    this.url = "";
+    this.alt = "Failed to load image";
+  }
+  toHTML(id) {
+    return `
+      <section class="Image" id="Image-${id}">
+        <img src="${this.url}" alt="${this.alt}" id="img-cont-${id}"/>
+        <input placeholder="Image URL" id="img-url-${id}" value="${this.url}" />
+        <button onclick="saveImage(${id})">Save Image</button>
+      </section>
+    `;
+  }
+  edit(url) {
+    this.url = url;
+  }
+  toJSON() {
+    return {
+      type: "Image",
+      url: this.url,
+      alt: this.alt
+    }
+  }
+}
+
 class Form {
   constructor(title) {
     this.title = title;
@@ -96,8 +155,27 @@ function saveFormData() {
   form.editDescription($("#form-desc").innerText);
 }
 
-function addQuestion() {
-  form.add(new MultipleChoiceQuestion());
+function addContent() {
+  let ctype = $("#q-dropdown").value;
+  let addition = null;
+  switch(ctype) {
+    case "MultipleChoiceQuestion":
+      addition = new MultipleChoiceQuestion();
+      break;
+    case "ShortAnswerQuestion":
+      addition = new ShortAnswerQuestion();
+      break;
+    case "ParagraphQuestion":
+      addition = new ParagraphQuestion();
+      break;
+    case "Image":
+      addition = new Image();
+      break;
+    default: // Error!
+      window.location.replace(`https://m00gle.repl.co/error?err=Invalid%20%23q-dropdown%20value%3A%20${ctype}&app=forms`)
+      break;
+  }
+  form.add(addition);
   $("#content").innerHTML += form.get(formIndex).toHTML(formIndex);
   formIndex++;
 }
@@ -121,4 +199,10 @@ function saveMultipleChoiceQuestion(id, optAmt) {
   for (let i = 0; i < optAmt; i++) {
     q.editOption(i, $(`#multi-q-${id}-option-${i}`).innerText)
   }
+}
+
+function saveImage(id) {
+  let i = form.get(id);
+  i.edit($(`#img-url-${id}`).innerText);
+  $(`#img-cont-${id}`).src = $(`#img-url-${id}`).innerText;
 }
