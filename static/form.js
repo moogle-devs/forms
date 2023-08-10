@@ -120,6 +120,36 @@ class Image extends FormContent {
   }
 }
 
+class Text extends FormContent {
+  constructor() {
+    super();
+    this.title = "Untitled";
+    this.description = "";
+  }
+  editTitle(title) {
+    this.title = title;
+  }
+  editDescription(description) {
+    this.description = description;
+  }
+  toJSON() {
+    return {
+      type: "Text",
+      title: this.title,
+      description: this.description
+    }
+  }
+  toHTML(id) {
+    return `
+      <section class="Text" id="Text-${id}">
+        <h2 class="txt-title" id="txt-title-${id}" contenteditable>${this.title}</h2>
+        <input class="txt-desc" id="txt-desc-${id}" />
+        <button class="save-data" onclick="saveTextData(${id});">Save Content</button>
+      </section>
+    `;
+  }
+}
+
 class Form {
   constructor(title) {
     this.title = title;
@@ -171,6 +201,9 @@ function addContent() {
     case "ParagraphQuestion":
       addition = new ParagraphQuestion();
       break;
+    case "Text":
+      addition = new Text();
+      break;
     case "Image":
       addition = new Image();
       break;
@@ -206,6 +239,12 @@ function saveMultipleChoiceQuestion(id, optAmt) {
 
 function saveImage(id) {
   let i = form.get(id);
-  i.edit($(`#img-url-${id}`).innerText);
-  $(`#img-cont-${id}`).src = $(`#img-url-${id}`).innerText;
+  i.edit($(`#img-url-${id}`).value);
+  $(`#img-cont-${id}`).setAttribute("src", $(`#img-url-${id}`).value);
+}
+
+function saveTextData(id) {
+  let t = form.get(id); // Nice, right?
+  t.editTitle($(`#txt-title-${id}`).innerText);
+  t.editDescription($(`#txt-desc-${id}`).innerText);
 }
