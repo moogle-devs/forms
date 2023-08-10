@@ -12,10 +12,6 @@ class Question extends FormContent {
     super();
     this.question = "Question";
     this.required = false;
-    this.init();
-  }
-  init() {
-    // empty
   }
   editQuestion(question) {
     this.question = question;
@@ -31,7 +27,8 @@ class Question extends FormContent {
 }
 
 class MultipleChoiceQuestion extends Question {
-  init() {
+  constructor() {
+    super();
     this.options = ["Option 1"];
   }
   editOption(id, optTxt) {
@@ -69,6 +66,9 @@ class MultipleChoiceQuestion extends Question {
 }
 
 class ShortAnswerQuestion extends Question {
+  constructor() {
+    super();
+  }
   toHTML(id) {
     return `
       <section class="ShortAnswerQuestion" id="ShortAnswerQuestion-${id}">
@@ -80,6 +80,9 @@ class ShortAnswerQuestion extends Question {
 }
 
 class ParagraphQuestion extends ShortAnswerQuestion {
+  constructor() {
+    super();
+  }
   toHTML(id) {
     return `
       <section class="ParagraphQuestion" id="ParagraphQuestion-${id}">
