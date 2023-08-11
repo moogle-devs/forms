@@ -17,12 +17,7 @@ class Question extends FormContent {
     this.question = question;
   }
   toggleRequired() {
-    if(this.required) {
-      this.required = false;
-    }
-    else {
-      this.required = true;
-    }
+    this.required = !this.required;
   }
 }
 
