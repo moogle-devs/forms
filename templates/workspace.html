@@ -10,6 +10,10 @@
   <link rel="icon" href="https://ssl.gstatic.com/docs/spreadsheets/forms/favicon_qp2.png" />
 </head>
 <body>
+  <div id="header">
+    <button class="material-symbols-outlined" title="To JSON" onclick="getJSONData();">data_object</button>
+    <span id="json">{}</span>
+  </div>
   <section id="top">
     <h1 contenteditable id="form-title">Untitled form</h1>
     <p>Form description: <span contenteditable id="form-desc"></span></p>
@@ -26,6 +30,6 @@
     </select>
     <button class="material-symbols-outlined" onclick="addContent();">add</button>
   </section>
-  <script src="/static/form.js"></script>
+  <script src="/static/edit.js"></script>
 </body>
 </html>
