@@ -19,6 +19,13 @@ class Question extends FormContent {
   toggleRequired() {
     this.required = !this.required;
   }
+  toJSON() {
+    return {
+      type: "Question",
+      question: this.question,
+      required: this.required
+    }
+  }
 }
 
 class MultipleChoiceQuestion extends Question {
@@ -36,8 +43,9 @@ class MultipleChoiceQuestion extends Question {
     this.options.pop();
   }
   toJSON() {
-    let jsonData = {
+    return {
       type: "MultipleChoiceQuestion",
+      question: this.question,
       required: this.required,
       options: this.options
     }
@@ -69,8 +77,15 @@ class ShortAnswerQuestion extends Question {
       <section class="ShortAnswerQuestion" id="ShortAnswerQuestion-${id}">
         <h2 contenteditable class="q-heading" id="saq-heading-${id}">${this.question}</h2>
         <input disabled placeholder="Short answer text" />
+        <button onclick="saveShortAnswer(${id});">Save Question</button>
       </section>
     `;
+  }
+  toJSON() {
+    return {
+      type: "ShortAnswerQuestion",
+      question: this.question
+    }
   }
 }
 
@@ -83,8 +98,28 @@ class ParagraphQuestion extends ShortAnswerQuestion {
       <section class="ParagraphQuestion" id="ParagraphQuestion-${id}">
         <h2 contenteditable class="q-heading" id="pgq-heading-${id}">${this.question}</h2>
         <input disabled placeholder="Long answer text" />
+        <button onclick="saveParagraphQuestion(${id});">Save Question</button>
       </section>
     `;
+  }
+  toJSON() {
+    return {
+      type: "ParagraphQuestion",
+      question: this.question
+    }
+  }
+}
+
+class DropdownQuestion extends MultipleChoiceQuestion {
+  constructor() {
+    super();
+  }
+  toJSON() {
+    return {
+      type: "DropdownQuestion",
+      question: this.question,
+      options: this.options
+    }
   }
 }
 
@@ -211,6 +246,10 @@ function addContent() {
   formIndex++;
 }
 
+function getJSONData() {
+  $("#json").innerText = JSON.stringify(form.toJSON());
+}
+
 // Save functions
 
 function saveMultipleChoiceQuestion(id, optAmt) {
@@ -242,4 +281,14 @@ function saveTextData(id) {
   let t = form.get(id); // Nice, right?
   t.editTitle($(`#txt-title-${id}`).innerText);
   t.editDescription($(`#txt-desc-${id}`).innerText);
+}
+
+function saveShortAnswer(id) {
+  let q = form.get(id);
+  q.editQuestion($(`#saq-heading-${id}`).innerText);
+}
+
+function saveParagraphQuestion(id) {
+  let q = form.get(id);
+  q.editQuestion($(`#pgq-heading-${id}`).innerText);
 }
