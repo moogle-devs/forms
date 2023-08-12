@@ -1,5 +1,5 @@
 # Moogle Forms
-[![**2 contributors**](https://img.shields.io/badge/contributors-2-green)](https://github.com/orgs/moogle-devs/people)
+[![**4 contributors**](https://img.shields.io/badge/contributors-4-green)](https://github.com/orgs/moogle-devs/people)
 
 Moogle Forms is a form service where you can create, edit, and submit forms.
 
