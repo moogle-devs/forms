@@ -65,6 +65,28 @@ class ParagraphQuestion extends ShortAnswerQuestion {
   }
 }
 
+class TimeQuestion extends Question {
+  constructor() {
+    super();
+  }
+  toHTML(id) {
+    return `
+      <section class="TimeQuestion" id="TimeQuestion-${id}">
+        <h2 contenteditable class="q-heading" id="tq-heading-${id}">${this.question}</h2>
+        <input disabled placeholder="Time" type="time" />
+        <span class="material-symbols-outlined">schedule</span>
+        <button onclick="saveTimeQuestion();">Save Question</button>
+      </section>
+    `;
+  }
+  toJSON() {
+    return {
+      type: "TimeQuestion",
+      question: this.question
+    }
+  }
+}
+      
 class Image extends FormContent {
   constructor() {
     super();
@@ -122,11 +144,26 @@ class Text extends FormContent {
   }
 }
 
-class Form {
+export default class Form {
   constructor(title) {
     this.title = title;
     this.description = "";
     this.content = [];
+    this.settings = {
+      responses: {
+        collectEmails: false,
+        sendResponse: false,
+        editResponse: false,
+        limit1: false
+      },
+      presentation: {
+        progressBar: false,
+        shuffle: false,
+        confirmation: "Your response has been recorded",
+        resubmitLink: true,
+        disableAutosave: false
+      }
+    };
   }
   editTitle(title) {
     this.title = title;
