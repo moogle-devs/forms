@@ -4,8 +4,6 @@
 
 {% block head %}
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" type="text/css" />
-  
-  <script type="text/javascript" src="{{ url_for('edit_script') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -34,4 +32,16 @@
     </select>
     <button class="material-symbols-outlined" onclick="addContent();">add</button>
   </section>
+  <div>
+    {% if login != "" %}
+    Connected to Replit: {{login}}<br/>
+    <button onclick="saveFormToCloud('{{login}}');">Save Form</button>
+    {% else %}
+    Login with Replit to save your forms in the cloud.<br/>
+    <script src="https://auth.util.repl.co/script.js"></script>
+    {% endif %}
+  </div>
+
+  <script type="text/javascript" src="{{ url_for('edit_script') }}"></script>
+
 {% endblock %}
