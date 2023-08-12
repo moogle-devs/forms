@@ -144,7 +144,7 @@ class Text extends FormContent {
   }
 }
 
-export default class Form {
+class Form {
   constructor(title) {
     this.title = title;
     this.description = "";
