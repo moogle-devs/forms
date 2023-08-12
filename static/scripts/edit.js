@@ -114,6 +114,19 @@ class DropdownQuestion extends MultipleChoiceQuestion {
   constructor() {
     super();
   }
+  toHTML(id) {
+    let lis = "";
+    for (let i = 0; i < this.options.length; i++) {
+      lis += `<li class="multi-q-option"><span class="material-symbols-outlined">arrow_drop_down</span><span contenteditable id="multi-q-${id}-option-${i}">${this.options[i]}</span></li>`;
+    }
+    return `
+      <section class="MultipleChoiceQuestion" id="MultipleChoiceQuestion-${id}">
+        <h2 contenteditable class="q-heading" id="mcq-heading-${id}">${this.question}</h2>
+        <ul class="multi-q-options" id="multi-q-${id}-options">${lis}</ul>
+        <button class="save-data" onclick="saveMultipleChoiceQuestion(${id}, ${this.options.length});">Save Question</button>
+      </section>
+    `;
+  }
   toJSON() {
     return {
       type: "DropdownQuestion",
@@ -236,6 +249,9 @@ function addContent() {
       break;
     case "Image":
       addition = new Image();
+      break;
+    case "DropdownQuestion":
+      addition = new DropdownQuestion();
       break;
     default: // Error!
       window.location.replace(`https://m00gle.repl.co/error?err=Invalid%20%23q-dropdown%20value%3A%20${ctype}&app=forms`)
