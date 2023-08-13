@@ -10,14 +10,14 @@ def style():
   return app.send_static_file("stylesheets/style.css")
 
 
-@app.route("/js/edit")
-def edit_script():
-  return app.send_static_file("scripts/edit.js")
+@app.route("/js/edit-form")
+def edit_form_script():
+  return app.send_static_file("scripts/edit-form.js")
 
 
-@app.route("/js/form")
-def form_script():
-  return app.send_static_file("scripts/form.js")
+@app.route("/js/load-form")
+def load_form_script():
+  return app.send_static_file("scripts/load-form.js")
 
 
 @app.route("/")
@@ -26,21 +26,24 @@ def index():
 
 
 @app.route("/edit")
-def edit():
-  return render_template("edit.html", login=web.auth.name)
+def edit_form():
+  return render_template("edit-form.html", login=web.auth.name)
 
 
-@app.route("/form")
-def form():
-  return render_template("form.html")
+@app.route("/load-form")
+@web.authenticated
+def load_form():
+  return render_template("load-form.html")
 
-@app.route('/save', methods=["POST"])
-def save2Cloud():
+
+@app.route("/save", methods=["POST"])
+def save_to_cloud():
   data = request.get_json(force=True)
   cloud = "https://9d5ff3d2-795a-4609-bb47-a5d4d13bd681-forms.m00gle.repl.co/";
-  r = post(cloud, json=data)
-  r.raise_for_status()
-  return r.json()
+  response = post(cloud, json=data)
+  response.raise_for_status()
+  return response.json()
+
 
 if __name__ == "__main__":
   app.run(host="0.0.0.0", port=81)
